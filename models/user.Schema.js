@@ -74,5 +74,20 @@ userSchema.methods = {
             }
         );
     },
+
+     // Generate Forgot Password Token TOKEN
+    generateForgotPasswordToken : function(){
+        const forgotToken = crypto.randomBytes(20).toString("hex");
+
+        //Step 1 - Save to Database
+        this.forgotPasswordToken = crypto.createHash("sha256").update(forgotToken).digest("hex");
+
+        this.forgotPasswordExpiry = Date.now() + 20 * 60 * 1000;
+
+        //Step 2 - Return values to user
+        return forgotToken;
+
+    },
+    
 };
 
