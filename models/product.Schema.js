@@ -41,7 +41,9 @@ const productSchema = new mongoose.Schema(
             type : Number,
             default : 0,
         },
-
+        
+         
+        //Added Ratings and total Ratings
         ratings : [
             {
                 star : {
