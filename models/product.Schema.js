@@ -41,6 +41,23 @@ const productSchema = new mongoose.Schema(
             type : Number,
             default : 0,
         },
+
+        ratings : [
+            {
+                star : {
+                    type:Number,
+                },
+                postedBy : {
+                    type : mongoose.Schema.Types.ObjectId,
+                    ref : "User",
+                }, 
+            }
+        ],
+
+        totalRating : {
+            type : String,
+            deafult : 0,
+        },
         
         collectionId : {
             type : mongoose.Schema.Types.ObjectId,
