@@ -55,7 +55,7 @@ const productSchema = new mongoose.Schema(
         ],
 
         totalRating : {
-            type : String,
+            type : Number,
             deafult : 0,
         },
         
