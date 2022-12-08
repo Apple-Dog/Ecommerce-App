@@ -6,3 +6,5 @@ const OrderStatus = Object.freeze({
 });
 
 export default OrderStatus;
+
+// Enum Created For Order Status

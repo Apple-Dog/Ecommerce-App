@@ -9,3 +9,5 @@ class CustomError extends Error {
 };
 
 export default CustomError;
+
+// Custom Error File which replaces writing Error Code Each and Every Time  

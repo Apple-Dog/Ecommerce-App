@@ -5,3 +5,5 @@ const AuthRoles = Object.freeze({
 });
 
 export default AuthRoles;
+
+// Enum Created For Roles

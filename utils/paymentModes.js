@@ -8,3 +8,5 @@ const PaymentModes = Object.freeze({
 });
 
 export default PaymentModes;
+
+// Enum Created For Payment
