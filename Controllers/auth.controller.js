@@ -23,7 +23,54 @@ export const CookieOptions = cookieOptions(3*24*60*60*1000);
  * @Returns User Object
  ******************************************************/
 
+export const signUp = asyncHandler(async (req,res)=>{
 
+    //Collect all Information
+    const {name , email, password} = req.body;
+
+    //Validate the Data if exists
+    if(!name || !email || !password){
+        throw new CustomError("Please Fill All Fields",400);
+    };
+
+    //Check If User Exists
+    const existingUser = await User.findOne({email});
+
+    if(existingUser){
+        throw new CustomError("User Already Exists",400);
+    }
+
+    //Checks Wether email is Valid or Not on the Bases Of Pattern
+    
+    if (!(emailValidation(email)))
+    {
+        throw new CustomError("Invalid Email",400);
+    };
+    //Creating New User Entry in the Database
+    const user = await User.create({
+        name,
+        email,
+        password
+    });
+
+    //Token Generation using Predefined Method in User Schema
+    const token = user.getJwtToken();
+    console.log(user);
+    user.password = undefined;
+
+
+    //Creating Cookies Along with Some Data
+    res.cookie("token", token, CookieOptions);
+
+    //Sending Bearer Token
+    res.setHeader("Authorization", "Bearer "+ token);
+
+    //Sending Response if User Entry gets Sucessfully Created in the Database
+    res.status(200).json({
+        success : true,
+        token,
+        user,
+    });
 
 
 });
