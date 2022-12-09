@@ -80,3 +80,90 @@ export const signUp = asyncHandler(async (req,res)=>{
 
 
 
+/******************************************************
+ * @SIGNIN
+ * @REQUEST_TYPE POST
+ * @Route http://localhost:4000/api/auth/signin
+ * @Description User signIn Controller for signing in user
+ * @Parameters email, password
+ * @Returns User Object
+ ******************************************************/
+
+export const signIn = asyncHandler(async (req,res)=>{
+
+    //Collect all Information
+    const {email, password} = req.body;
+
+    //Validate if email and password or either of them missing
+    if(!email || !password){
+        throw new CustomError("Credentials cannot be empty!",400);
+    };
+
+    //Check user is in the Database or not
+    const user = await User.findOne({email}).select("+password");
+
+    if (!user){
+        throw new CustomError("Invalid Credentials!",400);
+    }
+
+    //Compare Password Using Predefined Method in Schema "comparePassword"
+    const isPasswordMatched = await user.comparePassword(password);
+
+    if (isPasswordMatched){
+
+         //Token Generation using Predefined Method in User Schema
+        const token = user.getJwtToken();
+
+        //Setting Password undefined so that it couldn't be passed through token
+        user.password = undefined;
+
+        //Creating Cookies Along with Some Data
+        res.cookie("token", token, CookieOptions);
+
+        //Sending Bearer Token
+        res.setHeader("Authorization", "Bearer "+ token);
+
+        //Sending Response if User gets SignIn Successfully
+        res.status(200).json({
+            success : true,
+            token,
+            user,
+        });
+
+    };
+    
+    throw new CustomError("Invalid Credentials!-Password",400);
+
+});
+
+
+
+
+/******************************************************
+ * @SIGNOUT
+ * @REQUEST_TYPE POST
+ * @Route http://localhost:4000/api/auth/signout
+ * @Description User signOut by clearing user cookies
+ * @Parameters None
+ * @Returns Success Message
+ ******************************************************/
+
+export const signOut = asyncHandler(async (_req,res)=>{
+
+    //res.clearCookie() - Does not Give More Options, but can be Used
+
+    //Set Cookie to null
+    res.cookie("token", null, {
+        expires : new Date(Date.now()),
+        httpOnly : true,
+    });
+
+    //Set Bearer Token to null
+    res.setHeader("Authorization", null);
+
+    //Sending Response if User gets SignIn Successfully
+    res.status(200).json({
+        success : true,
+        message : "Sign Out"
+    })
+});
