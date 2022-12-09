@@ -56,7 +56,9 @@ export const signUp = asyncHandler(async (req,res)=>{
     //Token Generation using Predefined Method in User Schema
     const token = user.getJwtToken();
     console.log(user);
-    user.password = undefined;
+
+    //Setting Password undefined so that it couldn't be passed through token
+    user.password = undefined; 
 
 
     //Creating Cookies Along with Some Data
@@ -74,3 +76,7 @@ export const signUp = asyncHandler(async (req,res)=>{
 
 
 });
+
+
+
+
