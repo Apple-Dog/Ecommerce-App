@@ -1,14 +1,12 @@
 import User from "../models/user.Schema";
 import asyncHandler from "../services/asyncHandler";
 import CustomError from "../utils/customError";
-import cookieOptions from "../utils/cookieOptions";
+import cookieHelper from "../utils/cookieHelper";
 import emailValidation from "../utils/emailValidation";
 import mailHelper from "../utils/mailHelper";
-import config from "../config/index"
+import config from "../config/index";
+import crypto from "crypto";
 
-
-//Cookie Options
-export const CookieOptions = cookieOptions(3*24*60*60*1000);
 
 
 
@@ -62,12 +60,9 @@ export const signUp = asyncHandler(async (req,res)=>{
     // Setting Password undefined so that it couldn't be passed through token
     user.password = undefined; 
 
-
-    // Creating Cookies Along with Some Data
-    res.cookie("token", token, CookieOptions);
-
-    // Sending Bearer Token
-    res.setHeader("Authorization", "Bearer "+ token);
+    //Cookie Helper Method for Creating Cookies and sending to Response
+    //SET COOKIE & BEARER TOKEN VALUE AS "token"
+    cookieHelper(token);
 
     // Sending Response if User Entry gets Sucessfully Created in the Database
     res.status(200).json({
@@ -119,11 +114,9 @@ export const signIn = asyncHandler(async (req,res)=>{
         // Setting Password undefined so that it couldn't be passed through token
         user.password = undefined;
 
-        // Creating Cookies Along with Some Data
-        res.cookie("token", token, CookieOptions);
-
-        // Sending Bearer Token
-        res.setHeader("Authorization", "Bearer "+ token);
+        //Cookie Helper Method for Creating Cookies and sending to Response
+        //SET COOKIE & BEARER TOKEN VALUE AS "token"
+        cookieHelper(token);
 
         // Sending Response if User gets SignIn Successfully
         res.status(200).json({
@@ -154,16 +147,11 @@ export const signOut = asyncHandler(async (_req,res)=>{
 
     // res.clearCookie() - Does not Give More Options, but can be Used
 
-    // Set Cookie to null
-    res.cookie("token", null, {
-        expires : new Date(Date.now()),
-        httpOnly : true,
-    });
+    //Cookie Helper Method for Creating Cookies and sending to Response 
+    //SET COOKIE & BEARER TOKEN TO NULL
+    cookieHelper(null);
 
-    // Set Bearer Token to null
-    res.setHeader("Authorization", null);
-
-    // Sending Response if User gets SignIn Successfully
+    // Sending Response if User SignOuts Successfully
     res.status(200).json({
         success : true,
         message : "Sign Out"
@@ -244,3 +232,87 @@ export const forgotPassword = asyncHandler(async (req,res)=>{
 
 
 });
+
+
+
+
+/******************************************************
+ * @RESET_PASSWORD
+ * @REQUEST_TYPE POST
+ * @Route http://localhost:4000/api/auth/password/:resetToken
+ * @Description User will be able to reset password based on url token
+ * @Parameters Token from the Url, Password & Confirm Password
+ * @Returns User Object
+ ******************************************************/
+
+export const resetPassword = asyncHandler(async (req,res)=>{
+
+   // Grab Password Reset Token From Url 
+   const {token : resetToken} = req.params;
+   //Grab Password and Forgot password
+   const {password, confirmPassword} = req.body;
+
+   //Encrypt Password 
+   const resetPasswordToken = crypto.createHash('sha256').update(resetToken).digest('hex');
+
+   //Find User on the Basis of Reset Password Token with a check that that Token Expiry Time is Greater than Current Time
+   const user = await User.findOne({
+        forgotPasswordToken : resetPasswordToken,
+        forgotPasswordExpiry : {$gt : Date.now()}
+    });
+
+    // If User Not Found Throw Error
+    if(!user) {
+        throw new CustomError("Password Token is Invalid Or Expired.",400);
+    };
+
+    // If Password Does Not Match Confirm Password then Throw a Error 
+    if (password !== confirmPassword) {
+        throw new CustomError("Password & Confirm Password Does Not Match.",400);
+    };
+
+    // When All Checks Get Password then save the Current Password Given By User to the Database,
+    // Which will Automatically get Encrypted Before Saving into Database. 
+    user.password = password;
+
+    // Set Garbage Data to Undefined(Data Of No Use After New Password Got Set).
+    user.forgotPasswordToken = undefined;
+    user.forgotPasswordExpiry = undefined;
+
+    await user.save();
+
+    // Generate Token & Send as Response
+    const token = user.getJwtToken();
+    user.password = undefined;
+
+    //Cookie Helper Method for Creating Cookies and sending to Response
+    //SET COOKIE & BEARER TOKEN VALUE AS "token"
+    cookieHelper(token);
+
+    // Sending Response if User Reset Password Successfully
+    res.status(200).json({
+        success : true,
+        user,
+    });
+
+});
+
+
+
+
+/******************************************************
+ * @CHANGE_PASSWORD
+ * @REQUEST_TYPE POST
+ * @Route http://localhost:4000/api/auth/password/change
+ * @Description User will be able to change password if User is SignIN and after User Authentication
+ * @Parameters Token from the Url, Password & Confirm Password
+ * @Returns User Object
+ ******************************************************/
+
+
+
+
+
+
+
+
