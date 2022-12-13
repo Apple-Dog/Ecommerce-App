@@ -155,7 +155,7 @@ export const signOut = asyncHandler(async (_req,res)=>{
     res.status(200).json({
         success : true,
         message : "Sign Out"
-    })
+    });
 });
 
 
@@ -166,7 +166,7 @@ export const signOut = asyncHandler(async (_req,res)=>{
  * @REQUEST_TYPE POST
  * @Route http://localhost:4000/api/auth/password/forgot
  * @Description User will submit an email and it will generate a token
- * @Parameters email
+ * @Parameters Email
  * @Returns Success Message => Email Sent
  ******************************************************/
 
@@ -249,7 +249,7 @@ export const resetPassword = asyncHandler(async (req,res)=>{
 
    // Grab Password Reset Token From Url 
    const {token : resetToken} = req.params;
-   //Grab Password and Forgot password
+   //Grab Password and Confirm password
    const {password, confirmPassword} = req.body;
 
    //Encrypt Password 
@@ -304,10 +304,79 @@ export const resetPassword = asyncHandler(async (req,res)=>{
  * @CHANGE_PASSWORD
  * @REQUEST_TYPE POST
  * @Route http://localhost:4000/api/auth/password/change
- * @Description User will be able to change password if User is SignIN and after User Authentication
- * @Parameters Token from the Url, Password & Confirm Password
+ * @Description User will be able to change password if User is SignnedIn Or Authenticated
+ * @Parameters Password & Confirm Password
+ * @Returns Success Message
+ ******************************************************/
+
+export const changePassword = asyncHandler(async (req,res)=>{
+
+    // Grab User from request
+    const {user} = req;
+
+    //Grab Password and Forgot password
+    const {password, confirmPassword} = req.body;
+
+    // If User Not Found Throw Error
+    if(!user){
+        throw new CustomError("User Not Found.",404);
+    };
+
+    // If Password Does Not Match Confirm Password then Throw a Error 
+    if (password !== confirmPassword) {
+        throw new CustomError("Password & Confirm Password Does Not Match.",400);
+    };
+
+    //Find The User in Database and Update Password & Save it to "UpdatedUser"
+    const updatedUser = await User.findOneAndUpdate(user,{password : password});
+
+    // Generate Token & Send as Response
+    const token = updatedUser.getJwtToken();
+    updatedUser.password = undefined;
+
+    //Cookie Helper Method for Creating Cookies and sending to Response
+    //SET COOKIE & BEARER TOKEN VALUE AS "token"
+    cookieHelper(token);
+
+
+    // Sending Response if User Changed Password Successfully
+    res.status(200).json({
+        success : true,
+        message : "Password Changed"
+    })
+
+
+
+});
+
+
+
+
+/******************************************************
+ * @GET_PROFILE
+ * @REQUEST_TYPE GET
+ * @Route http://localhost:4000/api/auth/profile
+ * @Description Check for token and Populate req.user
+ * @Parameters None
  * @Returns User Object
  ******************************************************/
+
+export const getProfile = asyncHandler(async (req,res)=>{
+    
+    // Grab User from request
+    const {user} = req;
+
+    // If User Not Found Throw Error
+    if(!user){
+        throw new CustomError("User Not Found.",404);
+    };
+
+     // Sending Response if User is Found
+    res.status(200).json({
+        success : true,
+        user,
+    });
+});
 
 
 
