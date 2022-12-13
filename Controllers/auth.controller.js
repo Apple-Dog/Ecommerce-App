@@ -318,7 +318,13 @@ export const changePassword = asyncHandler(async (req,res)=>{
     const user = await User.findOne({email}).select("+password");
 
     //Grab Password and Forgot password
-    const {oldPassword,password, confirmPassword} = req.body;
+    const {oldPassword,newPassword, confirmPassword} = req.body;
+
+    // Check Whether Credential is Empty if true then Throw Error
+    if (!oldPassword || !newPassword || !confirmPassword)
+    {
+        throw new CustomError("Credentials cannot be empty!",400);
+    }
 
     // If User Not Found Throw Error
     if(!user){
@@ -334,14 +340,14 @@ export const changePassword = asyncHandler(async (req,res)=>{
     }
 
     // If Password Does Not Match Confirm Password then Throw a Error 
-    if (password !== confirmPassword) {
+    if (newPassword !== confirmPassword) {
         throw new CustomError("Password & Confirm Password Does Not Match.",400);
     };
 
 
     // When All Checks Get Password then save the Current Password Given By User to the Database,
     // Which will Automatically get Encrypted Before Saving into Database. 
-    user.password = password;
+    user.password = newPassword;
 
     await user.save();
 
@@ -357,7 +363,8 @@ export const changePassword = asyncHandler(async (req,res)=>{
     // Sending Response if User Changed Password Successfully
     res.status(200).json({
         success : true,
-        message : "Password Changed"
+        message : "Password Changed",
+        user,
     });
 
 
