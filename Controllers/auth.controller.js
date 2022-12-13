@@ -96,7 +96,7 @@ export const signIn = asyncHandler(async (req,res)=>{
         throw new CustomError("Credentials cannot be empty!",400);
     };
 
-    // Check user is in the Database or not
+    // Check user is in the Database or not while Selecting Password
     const user = await User.findOne({email}).select("+password");
 
     if (!user){
@@ -311,28 +311,43 @@ export const resetPassword = asyncHandler(async (req,res)=>{
 
 export const changePassword = asyncHandler(async (req,res)=>{
 
-    // Grab User from request
-    const {user} = req;
+    // Grab Email from req.user
+    const {email} = req.user;
+
+    // Check user is in the Database or not while Selecting Password
+    const user = await User.findOne({email}).select("+password");
 
     //Grab Password and Forgot password
-    const {password, confirmPassword} = req.body;
+    const {oldPassword,password, confirmPassword} = req.body;
 
     // If User Not Found Throw Error
     if(!user){
         throw new CustomError("User Not Found.",404);
     };
 
+    // Compare Password Using Predefined Method in Schema "comparePassword"
+    const isOldPasswordMatched = await user.comparePassword(oldPassword);
+
+    // If Old Password Does not Match in the Database then Throw Error
+    if (!isOldPasswordMatched){
+        throw new CustomError("Invalid Credentials!-Password",400);
+    }
+
     // If Password Does Not Match Confirm Password then Throw a Error 
     if (password !== confirmPassword) {
         throw new CustomError("Password & Confirm Password Does Not Match.",400);
     };
 
-    //Find The User in Database and Update Password & Save it to "UpdatedUser"
-    const updatedUser = await User.findOneAndUpdate(user,{password : password});
+
+    // When All Checks Get Password then save the Current Password Given By User to the Database,
+    // Which will Automatically get Encrypted Before Saving into Database. 
+    user.password = password;
+
+    await user.save();
 
     // Generate Token & Send as Response
-    const token = updatedUser.getJwtToken();
-    updatedUser.password = undefined;
+    const token = user.getJwtToken();
+    user.password = undefined;
 
     //Cookie Helper Method for Creating Cookies and sending to Response
     //SET COOKIE & BEARER TOKEN VALUE AS "token"
@@ -343,7 +358,7 @@ export const changePassword = asyncHandler(async (req,res)=>{
     res.status(200).json({
         success : true,
         message : "Password Changed"
-    })
+    });
 
 
 
