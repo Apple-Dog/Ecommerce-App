@@ -4,7 +4,7 @@ import CustomError from "../utils/customError";
 import cookieHelper from "../utils/cookieHelper";
 import emailValidation from "../utils/emailValidation";
 import mailHelper from "../utils/mailHelper";
-import config from "../config/index";
+import config from "../config/env.config";
 import crypto from "crypto";
 
 
