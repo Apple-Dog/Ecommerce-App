@@ -91,7 +91,7 @@ export const signIn = asyncHandler(async (req,res)=>{
     // Collect all Information
     const {email, password} = req.body;
 
-    // Validate if email and password or either of them missing
+    // Validatation Check if email and password or either of them missing
     if(!email || !password){
         throw new CustomError("Credentials cannot be empty!",400);
     };
@@ -172,7 +172,7 @@ export const signOut = asyncHandler(async (_req,res)=>{
 
 export const forgotPassword = asyncHandler(async (req,res)=>{
 
-    // Grab Email
+    // Grab Email from Frontend
     const {email} = req.body;
 
     // Checks Whether email is Valid or Not on the Bases Of Pattern or Whether Email is null
@@ -249,7 +249,7 @@ export const resetPassword = asyncHandler(async (req,res)=>{
 
    // Grab Password Reset Token From Url 
    const {token : resetToken} = req.params;
-   //Grab Password and Confirm password
+   //Grab Password and Confirm password from Frontend
    const {password, confirmPassword} = req.body;
 
    //Encrypt Password 
