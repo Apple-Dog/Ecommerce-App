@@ -11,7 +11,7 @@ import CustomError from "../utils/customError";
  * @Route http://localhost:4000/api/collection/create
  * @Description Create a New Collection in the Database
  * @Parameters name
- * @Returns User Object
+ * @Returns Collection Object
  ******************************************************/
 
 export const createCollection = asyncHandler(async (req,res)=>{
@@ -48,7 +48,7 @@ export const createCollection = asyncHandler(async (req,res)=>{
  * @Route http://localhost:4000/api/collection/update/:collectionId
  * @Description Update an Existing Collection in the Database based on ID of Collection  passed in URL
  * @Parameters id from URL, name
- * @Returns User Object
+ * @Returns Collection Object
  ******************************************************/
 
 export const updateCollection = asyncHandler(async (req,res)=>{
@@ -102,7 +102,7 @@ export const updateCollection = asyncHandler(async (req,res)=>{
  * @Route http://localhost:4000/api/collection/delete/:collectionId
  * @Description Delete an Existing Collection in the Database based on ID of Collection  passed in URL
  * @Parameters id from URL
- * @Returns User Object
+ * @Returns Collection Object
  ******************************************************/
 
 export const deleteCollection = asyncHandler(async (req,res)=>{
@@ -139,7 +139,7 @@ export const deleteCollection = asyncHandler(async (req,res)=>{
  * @Route http://localhost:4000/api/collection/all
  * @Description Gets the List of Collections
  * @Parameters None
- * @Returns User Object
+ * @Returns Collection Object
  ******************************************************/
 
 export const getAllCollections = asyncHandler(async (_req,res)=>{
