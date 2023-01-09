@@ -23,7 +23,7 @@ import crypto from "crypto";
  * @Returns User Object
  ******************************************************/
 
-export const signUp = asyncHandler(async (req,res)=>{
+export const signUp = asyncHandler(async (req, res)=>{
 
     // Collect all Information
     const {name , email, password} = req.body;
@@ -86,7 +86,7 @@ export const signUp = asyncHandler(async (req,res)=>{
  * @Returns User Object
  ******************************************************/
 
-export const signIn = asyncHandler(async (req,res)=>{
+export const signIn = asyncHandler(async (req, res)=>{
 
     // Collect all Information
     const {email, password} = req.body;
@@ -143,7 +143,7 @@ export const signIn = asyncHandler(async (req,res)=>{
  * @Returns Success Message
  ******************************************************/
 
-export const signOut = asyncHandler(async (_req,res)=>{
+export const signOut = asyncHandler(async (_req, res)=>{
 
     // res.clearCookie() - Does not Give More Options, but can be Used
 
@@ -170,7 +170,7 @@ export const signOut = asyncHandler(async (_req,res)=>{
  * @Returns Success Message => Email Sent
  ******************************************************/
 
-export const forgotPassword = asyncHandler(async (req,res)=>{
+export const forgotPassword = asyncHandler(async (req, res)=>{
 
     // Grab Email from Frontend
     const {email} = req.body;
@@ -245,7 +245,7 @@ export const forgotPassword = asyncHandler(async (req,res)=>{
  * @Returns User Object
  ******************************************************/
 
-export const resetPassword = asyncHandler(async (req,res)=>{
+export const resetPassword = asyncHandler(async (req, res)=>{
 
    // Grab Password Reset Token From Url 
    const {token : resetToken} = req.params;
@@ -309,7 +309,7 @@ export const resetPassword = asyncHandler(async (req,res)=>{
  * @Returns Success Message
  ******************************************************/
 
-export const changePassword = asyncHandler(async (req,res)=>{
+export const changePassword = asyncHandler(async (req, res)=>{
 
     // Grab Email from req.user
     const {email} = req.user;
@@ -383,7 +383,7 @@ export const changePassword = asyncHandler(async (req,res)=>{
  * @Returns User Object
  ******************************************************/
 
-export const getProfile = asyncHandler(async (req,res)=>{
+export const getProfile = asyncHandler(async (req, res)=>{
     
     // Grab User from request
     const {user} = req;

@@ -4,6 +4,9 @@ import CustomError from "../utils/customError";
 
 
 
+//------------------------ API ROUTES ------------------------
+
+
 
 /******************************************************
  * @CREATE_COLLECTION
@@ -14,7 +17,7 @@ import CustomError from "../utils/customError";
  * @Returns Collection Object
  ******************************************************/
 
-export const createCollection = asyncHandler(async (req,res)=>{
+export const createCollection = asyncHandler(async (req, res)=>{
 
      // Grab Name from Frontend
     const {name} = req.body;
@@ -51,7 +54,7 @@ export const createCollection = asyncHandler(async (req,res)=>{
  * @Returns Collection Object
  ******************************************************/
 
-export const updateCollection = asyncHandler(async (req,res)=>{
+export const updateCollection = asyncHandler(async (req, res)=>{
 
     // Grab ID From URL
     const {id : collectionId} = req.params;
@@ -105,7 +108,7 @@ export const updateCollection = asyncHandler(async (req,res)=>{
  * @Returns Collection Object
  ******************************************************/
 
-export const deleteCollection = asyncHandler(async (req,res)=>{
+export const deleteCollection = asyncHandler(async (req, res)=>{
 
     // Grab ID From URL
     const {id : collectionId} = req.params;
@@ -142,7 +145,7 @@ export const deleteCollection = asyncHandler(async (req,res)=>{
  * @Returns Collection Object
  ******************************************************/
 
-export const getAllCollections = asyncHandler(async (_req,res)=>{
+export const getAllCollections = asyncHandler(async (_req, res)=>{
 
     // Gets A List Of Collections and Store in "collection".
     const collections = await Collection.find();
