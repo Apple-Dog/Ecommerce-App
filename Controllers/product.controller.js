@@ -100,10 +100,10 @@ export const addProduct = asyncHandler (async (req, res) => {
 
 /******************************************************
  * @GET_ALL_PRODUCT
- * @REQUEST_TYPE POST
+ * @REQUEST_TYPE GET
  * @Route http://localhost:4000/api/product/all
  * @Description 1.Controller used for Getting all Products Details
- *              2. User and Admin can get all the Prducts
+ *              2. User and Admin can get all the Products
  * @Parameters None
  * @Returns Product Object
  ******************************************************/
@@ -111,6 +111,37 @@ export const addProduct = asyncHandler (async (req, res) => {
 export const getAllProducts = asyncHandler (async (_req, res) => {
 
     const products = await Product.find({});
+    
+    if(!products) {
+         throw new CustomError("No Product was Found",404);
+    };
+
+    res.status(201).json({
+        success : true,
+        products
+    });
+});
+
+
+
+
+
+/******************************************************
+ * @GET_PRODUCT_BY_ID
+ * @REQUEST_TYPE GET
+ * @Route http://localhost:4000/api/product/:id
+ * @Description 1.Controller used for Getting Single Product Details
+ *              2. User and Admin can get Single Product details
+ * @Parameters ID
+ * @Returns Product Object
+ ******************************************************/
+
+export const getProductById = asyncHandler (async (_req, res) => {
+
+    const {id : productId} = req.params;
+
+    const products = await Product.findById(productId);
+
     if(!products) {
          throw new CustomError("No Product was Found",404);
     };
