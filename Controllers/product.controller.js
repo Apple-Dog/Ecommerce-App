@@ -15,7 +15,7 @@ import config from "../config/env.config";
 /******************************************************
  * @ADD_PRODUCT
  * @REQUEST_TYPE POST
- * @Route http://localhost:4000/api/product
+ * @Route http://localhost:4000/api/product/add
  * @Description 1.Controller used for Creating a New Product
  *              2. Only Admin can Create the Coupon
  *              3. Uses AWS S3 Bucket for image upload
@@ -58,7 +58,7 @@ export const addProduct = asyncHandler (async (req, res) => {
                     });
 
                     return ({
-                        secure_url : (await upload).Location
+                        secure_url : await upload.Location,
                     });
                 })
             );
@@ -73,6 +73,8 @@ export const addProduct = asyncHandler (async (req, res) => {
 
             if(!product){
                 throw new CustomError("Product was not Created.", 400);
+
+                // Remove Image From AWS Code .....
             };
 
             res.status(200).json({
@@ -91,3 +93,38 @@ export const addProduct = asyncHandler (async (req, res) => {
     });
 
 });
+
+
+
+
+
+/******************************************************
+ * @GET_ALL_PRODUCT
+ * @REQUEST_TYPE POST
+ * @Route http://localhost:4000/api/product/all
+ * @Description 1.Controller used for Getting all Products Details
+ *              2. User and Admin can get all the Prducts
+ * @Parameters None
+ * @Returns Product Object
+ ******************************************************/
+
+export const getAllProducts = asyncHandler (async (_req, res) => {
+
+    const products = await Product.find({});
+    if(!products) {
+         throw new CustomError("No Product was Found",404);
+    };
+
+    res.status(201).json({
+        success : true,
+        products
+    });
+});
+
+
+
+
+
+
+
+
