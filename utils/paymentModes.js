@@ -5,8 +5,9 @@ const PaymentModes = Object.freeze({
     NETBANKING : "NETBANKING",
     UPI : "UPI",
     WALLET : "WALLET",
+    EMI : "EMI",
 });
 
 export default PaymentModes;
 
-// Enum Created For Payment
+// Enum Created For Payment Modes
