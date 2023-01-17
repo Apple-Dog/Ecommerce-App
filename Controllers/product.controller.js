@@ -2,7 +2,7 @@ import Product from "../models/product.Schema";
 import formidable from "formidable";
 import fs from "fs";
 import {uploadFile , deleteFile} from "../services/imageHandler";
-import Mongose, { Mongoose } from "mongoose";
+import { Mongoose } from "mongoose";
 import asyncHandler from "../services/asyncHandler";
 import CustomError from "../utils/customError";
 import config from "../config/env.config";
