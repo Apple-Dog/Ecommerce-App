@@ -47,7 +47,7 @@ export const generateRazorpayOrderId = asyncHandler (async (req, res) =>{
     // Total Amount & Final Amount
 
     const totalAmount = productsList.reduce((previousAmount,Product) => {
-        return previousAmount+Product.price;
+        return previousAmount + Product.price;
     });
 
     const Discount = (totalAmount * coupon.discount)/100;
