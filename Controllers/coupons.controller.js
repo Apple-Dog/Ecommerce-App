@@ -134,7 +134,7 @@ export const deleteCoupon = asyncHandler (async (req, res) => {
     // Delete an Existing Collection in the Database.
     const deletedCoupon = await Coupon.findByIdAndDelete({_id : couponId});
 
-    if(!coupon){
+    if(!deletedCoupon){
         throw new CustomError("Coupon does not Exists",404);
     };
 
