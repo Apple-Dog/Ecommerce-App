@@ -92,7 +92,7 @@ export const updateCollection = asyncHandler(async (req, res)=>{
         updateCollection, 
     });
 
-    // Unsetting updateCollection to Free Up Space from the Memory
+    // Unsetting updatedCollection to Free Up Space from the Memory
     updatedCollection.remove();
 
 });
@@ -129,7 +129,7 @@ export const deleteCollection = asyncHandler(async (req, res)=>{
         deletedCollection, 
     });
 
-    // Unsetting deleteCollection to Free Up Space from the Memory
+    // Unsetting deletedCollection to Free Up Space from the Memory
     deletedCollection.remove();
 
 });

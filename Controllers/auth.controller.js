@@ -71,6 +71,7 @@ export const signUp = asyncHandler(async (req, res)=>{
         user,
     });
 
+    // Unsetting existingUser, token, user, to Free Up Space from the Memory
     existingUser.remove();
     token.remove();
     user.remove();
@@ -128,12 +129,16 @@ export const signIn = asyncHandler(async (req, res)=>{
             user,
         });
 
+         // Unsetting isPasswordMatched, user to Free Up Space from the Memory
+
+         isPasswordMatched.remove();
+         user.remove();
+
     };
     
     throw new CustomError("Invalid Credentials!-Password",400);
 
-    isPasswordMatched.remove();
-    user.remove();
+    
 });
 
 
@@ -233,7 +238,8 @@ export const forgotPassword = asyncHandler(async (req, res)=>{
 
         throw new CustomError(error.message||"Email Sent Failure",500);
     }
-
+    
+    // Unsetting resetToken, resetUrl, text, html, user to Free Up Space from the Memory
     resetToken.remove();
     resetUrl.remove();
     text.remove();
@@ -305,6 +311,7 @@ export const resetPassword = asyncHandler(async (req, res)=>{
         user,
     });
 
+    // Unsetting resetPasswordToken, token, user to Free Up Space from the Memory
     resetPasswordToken.remove();
     token.remove();
     user.remove();
@@ -381,6 +388,7 @@ export const changePassword = asyncHandler(async (req, res)=>{
         user,
     });
 
+    // Unsetting isOldPasswordMatched, token, user to Free Up Space from the Memory
     isOldPasswordMatched.remove();
     token.remove();
     user.remove();

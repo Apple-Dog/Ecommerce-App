@@ -100,6 +100,7 @@ export const addProduct = asyncHandler (async (req, res) => {
                 product,
             });
 
+            // Unsetting imgArrayResponse, imgArray, product, to Free Up Space from the Memory
             imgArrayResponse.remove();
             imgArray.remove();
             product.remove();
@@ -146,6 +147,7 @@ export const getAllProducts = asyncHandler (async (_req, res) => {
         products,
     });
 
+    // Unsetting products, to Free Up Space from the Memory
     products.remove();
 
 });
@@ -182,6 +184,7 @@ export const getProductById = asyncHandler (async (req, res) => {
         product,
     });
 
+    // Unsetting product, to Free Up Space from the Memory
     product.remove();
 
 });

@@ -76,6 +76,9 @@ export const generateRazorpayOrderId = asyncHandler (async (req, res) =>{
         order
     });
 
+    // Unsetting Products, coupon, productsList, totalAmount, Discount, finalAmount, options, order 
+    // to Free Up Space from the Memory
+    
     Products.remove();
     coupon.remove();
     productsList.remove();
