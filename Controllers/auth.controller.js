@@ -1,10 +1,10 @@
-import User from "../models/user.Schema";
-import asyncHandler from "../services/asyncHandler";
-import CustomError from "../utils/customError";
-import cookieHelper from "../utils/cookieHelper";
-import emailValidation from "../utils/emailValidation";
-import mailHelper from "../utils/mailHelper";
-import config from "../config/env.config";
+import User from "../models/user.Schema.js";
+import asyncHandler from "../services/asyncHandler.js";
+import CustomError from "../utils/customError.js";
+import cookieHelper from "../utils/cookieHelper.js";
+import emailValidation from "../utils/emailValidation.js";
+import mailHelper from "../utils/mailHelper.js";
+import config from "../config/env.config.js";
 import crypto from "crypto";
 
 

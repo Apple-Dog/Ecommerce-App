@@ -1,9 +1,9 @@
-import Product from "../models/product.Schema";
-import Coupon from "../models/coupon.Schema";
+import Product from "../models/product.Schema.js";
+import Coupon from "../models/coupon.Schema.js";
 import Order from "../models/order.Schema";
-import asyncHandler from "../services/asyncHandler";
-import CustomError from "../utils/customError";
-import Razorpay from "../config/razorpay.config";
+import asyncHandler from "../services/asyncHandler.js";
+import CustomError from "../utils/customError.js";
+import Razorpay from "../config/razorpay.config.js";
 
 
 

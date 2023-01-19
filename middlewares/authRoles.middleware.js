@@ -1,5 +1,5 @@
-import CustomError from "../utils/customError";
-import asyncHandler from "../services/asyncHandler";
+import CustomError from "../utils/customError.js";
+import asyncHandler from "../services/asyncHandler.js";
 
 export const hasRoles = asyncHandler((...permittedRoles) => {
      

@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
-import OrderStatus from "../utils/orderStatus";
-import PaymentModes from "../utils/paymentModes";
+import OrderStatus from "../utils/orderStatus.js";
+import PaymentModes from "../utils/paymentModes.js";
+import PaymentStatus from "../utils/paymentStatus.js";
 
 
 const orderSchema = new mongoose.Schema(
@@ -72,6 +73,12 @@ const orderSchema = new mongoose.Schema(
             type : String,
             enum : Object.values(PaymentModes),
             default : PaymentModes.COD,
+        },
+
+        paymentStatus : {
+            type : String,
+            enum : Object.values(PaymentStatus),
+            default : PaymentStatus.CREATED,
         },
 
     },

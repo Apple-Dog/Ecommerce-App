@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
-import app from "./app";
-import  config  from "./config/index";
+import app from "./app.js";
+import  config  from "./config/env.config.js";
 
 // Self Invoking Function For Database Connection
 (async () => {
@@ -16,7 +16,7 @@ import  config  from "./config/index";
         });
 
         const onListening = () => {
-            console.log(`Listening on PORT : $(config.PORT)`);
+            console.log(`Listening on PORT : ${config.PORT}`);
         };
 
         app.listen(config.PORT, onListening);

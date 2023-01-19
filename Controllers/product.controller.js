@@ -1,11 +1,11 @@
-import Product from "../models/product.Schema";
+import Product from "../models/product.Schema.js";
 import formidable from "formidable";
 import fs from "fs";
-import {uploadFile , deleteFile} from "../services/imageHandler";
+import {uploadFile , deleteFile} from "../services/imageHandler.js";
 import { Mongoose } from "mongoose";
-import asyncHandler from "../services/asyncHandler";
-import CustomError from "../utils/customError";
-import config from "../config/env.config";
+import asyncHandler from "../services/asyncHandler.js";
+import CustomError from "../utils/customError.js";
+import config from "../config/env.config.js";
 
 
 //------------------------ API ROUTES ------------------------

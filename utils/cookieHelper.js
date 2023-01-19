@@ -1,4 +1,4 @@
-import cookieOptions from "../utils/cookieOptions";
+import cookieOptions from "../utils/cookieOptions.js";
 
 
 
