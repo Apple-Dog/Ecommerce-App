@@ -8,7 +8,7 @@ import  config  from "./config/env.config.js";
     try {
 
        await mongoose.connect(config.MONGODB_URL);
-        console.log("Connected tro DB Successfully");
+        console.log("Connected to Database Successfully");
 
         app.on("error", (error)=>{
             console.log(error);
