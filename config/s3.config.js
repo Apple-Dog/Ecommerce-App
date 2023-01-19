@@ -1,5 +1,5 @@
 import aws from "aws-sdk";
-import config from "../config/env.config";
+import config from "../config/env.config.js";
 
 //AWS S3 Bucket Config File
 const s3 = new aws.S3({
