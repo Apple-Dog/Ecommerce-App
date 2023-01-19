@@ -48,7 +48,7 @@ export const createCollection = asyncHandler(async (req, res)=>{
 /******************************************************
  * @UPDATE_COLLECTION
  * @REQUEST_TYPE POST
- * @Route http://localhost:4000/api/collection/update/:collectionId
+ * @Route http://localhost:4000/api/collection/update/:id
  * @Description Update an Existing Collection in the Database based on ID of Collection  passed in URL
  * @Parameters id from URL, name
  * @Returns Collection Object
@@ -64,11 +64,12 @@ export const updateCollection = asyncHandler(async (req, res)=>{
 
     // Validate wether Name is Empty or Not.
     if(!name){
-        throw new CustomError("Collection Name is Requied",400);
+        throw new CustomError("Collection Name is Required",400);
     };
 
     // Updating an Existing Collection in the Database
     const updatedCollection = await Collection.findByIdAndUpdate(
+        collectionId,
         {
             name,
         },
@@ -92,7 +93,7 @@ export const updateCollection = asyncHandler(async (req, res)=>{
     });
 
     // Unsetting updateCollection to Free Up Space from the Memory
-    updateCollection.remove();
+    updatedCollection.remove();
 
 });
 
@@ -101,7 +102,7 @@ export const updateCollection = asyncHandler(async (req, res)=>{
 
 /******************************************************
  * @DELETE_COLLECTION
- * @REQUEST_TYPE POST
+ * @REQUEST_TYPE DELETE
  * @Route http://localhost:4000/api/collection/delete/:collectionId
  * @Description Delete an Existing Collection in the Database based on ID of Collection  passed in URL
  * @Parameters id from URL
@@ -124,12 +125,12 @@ export const deleteCollection = asyncHandler(async (req, res)=>{
     // Sending Response if Collection Name gets Deleted Sucessfully in the Database
     res.status.json({
         success : true,
-        message : "Collection Updated Successfully",
+        message : "Collection Deleted Successfully",
         deletedCollection, 
     });
 
     // Unsetting deleteCollection to Free Up Space from the Memory
-    deleteCollection.remove();
+    deletedCollection.remove();
 
 });
 
@@ -152,13 +153,13 @@ export const getAllCollections = asyncHandler(async (_req, res)=>{
 
     // Validate Whether "Collection" is Empty or Not.
     if(!collections){
-        throw new CustomError("No Collection Found",404);
+        throw new CustomError("No Collections Found",404);
     };
 
     // Sending Response if Collections List gets Sucessfully Fetched from the Database
     res.status.json({
         success : true,
-        message : "Collection Updated Successfully",
+        message : "Fetched All Collections Successfully",
         collections, 
     });
 

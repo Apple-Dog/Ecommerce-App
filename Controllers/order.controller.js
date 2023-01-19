@@ -76,4 +76,13 @@ export const generateRazorpayOrderId = asyncHandler (async (req, res) =>{
         order
     });
 
+    Products.remove();
+    coupon.remove();
+    productsList.remove();
+    totalAmount.remove();
+    Discount.remove();
+    finalAmount.remove();
+    options.remove();
+    order.remove();
+
 });

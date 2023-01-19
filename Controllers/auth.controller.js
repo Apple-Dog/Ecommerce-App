@@ -50,7 +50,7 @@ export const signUp = asyncHandler(async (req, res)=>{
     const user = await User.create({
         name,
         email,
-        password
+        password,
     });
 
     // Token Generation using Predefined Method in User Schema
@@ -71,6 +71,9 @@ export const signUp = asyncHandler(async (req, res)=>{
         user,
     });
 
+    existingUser.remove();
+    token.remove();
+    user.remove();
 
 });
 
@@ -129,6 +132,8 @@ export const signIn = asyncHandler(async (req, res)=>{
     
     throw new CustomError("Invalid Credentials!-Password",400);
 
+    isPasswordMatched.remove();
+    user.remove();
 });
 
 
@@ -229,6 +234,11 @@ export const forgotPassword = asyncHandler(async (req, res)=>{
         throw new CustomError(error.message||"Email Sent Failure",500);
     }
 
+    resetToken.remove();
+    resetUrl.remove();
+    text.remove();
+    html.remove();
+    user.remove();
 
 
 });
@@ -294,6 +304,10 @@ export const resetPassword = asyncHandler(async (req, res)=>{
         success : true,
         user,
     });
+
+    resetPasswordToken.remove();
+    token.remove();
+    user.remove();
 
 });
 
@@ -367,7 +381,9 @@ export const changePassword = asyncHandler(async (req, res)=>{
         user,
     });
 
-
+    isOldPasswordMatched.remove();
+    token.remove();
+    user.remove();
 
 });
 

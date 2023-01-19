@@ -100,6 +100,10 @@ export const addProduct = asyncHandler (async (req, res) => {
                 product,
             });
 
+            imgArrayResponse.remove();
+            imgArray.remove();
+            product.remove();
+
             
         } catch (error) {
             return res.status(500).json({
@@ -139,8 +143,11 @@ export const getAllProducts = asyncHandler (async (_req, res) => {
     // When Successful Send Response
     res.status(201).json({
         success : true,
-        products
+        products,
     });
+
+    products.remove();
+
 });
 
 
@@ -162,18 +169,21 @@ export const getProductById = asyncHandler (async (req, res) => {
     // Get id from URL as productId
     const {id : productId} = req.params;
 
-    const products = await Product.findById(productId);
+    const product = await Product.findById(productId);
 
     // CHECK : When Product Not Found throw Error
-    if(!products) {
+    if(!product) {
          throw new CustomError("No Product was Found",404);
     };
 
     // When Successful Send Response
     res.status(201).json({
         success : true,
-        products
+        product,
     });
+
+    product.remove();
+
 });
 
 
