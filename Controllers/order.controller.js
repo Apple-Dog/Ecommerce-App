@@ -28,13 +28,20 @@ export const generateRazorpayOrderId = asyncHandler (async (req, res) =>{
         throw new CustomError("No Product was Found",404);
     };
 
-    
-    const coupon = await Coupon.find({code : { $eq : couponCode } });
-    
-    // Coupon Check DB
-    if(!coupon || !coupon.active){
-        throw new CustomError("Invalid Coupon Code",400);
-    };
+    let coupon;
+
+    // Checks Coupon Only if Coupon Code is not Null
+    if(couponCode !== null){
+        
+        // Queru Database for Cooupon using Aggregation and makes a Copy
+        coupon = await Coupon.find({code : { $eq : couponCode } });
+        
+        // Coupon Check DB
+        if(!coupon || !coupon.active){
+            throw new CustomError("Invalid Coupon Code",400);
+        };
+
+    }
 
     // Verify the Product Price From Backend And Make Database Query to get all Products and Info
 
@@ -50,7 +57,7 @@ export const generateRazorpayOrderId = asyncHandler (async (req, res) =>{
         return previousAmount + Product.price;
     });
 
-    const Discount = (totalAmount * coupon.discount)/100;
+    const Discount = couponCode !== null ? (totalAmount * coupon.discount)/100 : 0;
 
     // finalAmount = totalAmount - Discount
     const finalAmount = totalAmount - Discount;
